@@ -17,25 +17,8 @@ public class HammingCode {
         return encoded;
     }
 
-    // Method to decode data and correct single-bit errors
+    // Method to decode data without error correction
     public static int[] decode(int[] encoded) {
-        // Calculate parity checks
-        int p1 = encoded[0] ^ encoded[2] ^ encoded[4] ^ encoded[6];
-        int p2 = encoded[1] ^ encoded[2] ^ encoded[5] ^ encoded[6];
-        int p3 = encoded[3] ^ encoded[4] ^ encoded[5] ^ encoded[6];
-        
-        // Determine the position of the error
-        int errorPosition = p1 * 1 + p2 * 2 + p3 * 4;
-
-        // Correct the error if one is detected
-        if (errorPosition != 0) {
-            System.out.println("Error detected at position: " + errorPosition);
-            encoded[errorPosition - 1] = encoded[errorPosition - 1] == 0 ? 1 : 0; // Flip the bit
-            System.out.println("Error corrected.");
-        } else {
-            System.out.println("No error detected.");
-        }
-
         // Extract original data bits
         int[] data = {encoded[2], encoded[4], encoded[5], encoded[6]};
         return data;
@@ -64,14 +47,6 @@ public class HammingCode {
             System.out.print(bit + " ");
         }
         System.out.println();
-
-        // Simulate an error in encoded data
-        System.out.println("Enter the position to introduce an error (1-7, or 0 for no error): ");
-        int errorPosition = sc.nextInt();
-        if (errorPosition > 0 && errorPosition <= 7) {
-            encodedData[errorPosition - 1] = encodedData[errorPosition - 1] == 0 ? 1 : 0;
-            System.out.println("Error introduced at position: " + errorPosition);
-        }
 
         // Decode the data
         int[] decodedData = decode(encodedData);
