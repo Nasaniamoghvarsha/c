@@ -1,0 +1,47 @@
+import java.util.Scanner;
+
+public class Checksum {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Input data
+        System.out.print("Enter data (space-separated integers): ");
+        String[] dataStrings = sc.nextLine().split(" ");
+        int[] data = new int[dataStrings.length];
+        for (int i = 0; i < dataStrings.length; i++) {
+            data[i] = Integer.parseInt(dataStrings[i]);
+        }
+
+        // Compute checksum
+        int checksum = computeChecksum(data);
+        System.out.println("Computed checksum: " + checksum);
+
+        // Transmitted data
+        System.out.print("Enter received data (space-separated integers): ");
+        String[] receivedStrings = sc.nextLine().split(" ");
+        int[] receivedData = new int[receivedStrings.length];
+        for (int i = 0; i < receivedStrings.length; i++) {
+            receivedData[i] = Integer.parseInt(receivedStrings[i]);
+        }
+
+        // Verify checksum
+        int receivedChecksum = computeChecksum(receivedData);
+        if (receivedChecksum == 0) {
+            System.out.println("No error in received data.");
+        } else {
+            System.out.println("Error detected in received data.");
+        }
+
+        sc.close();
+    }
+
+    // Function to compute checksum
+    private static int computeChecksum(int[] data) {
+        int sum = 0;
+        for (int num : data) {
+            sum += num;
+        }
+        // Perform 1's complement
+        return (~sum) & 0xFFFF; // Limit to 16 bits
+    }
+}
